@@ -19,6 +19,10 @@
 # build
 build
 
+# gradlew -> gradle form linux
+gradlew
+gradlew.bat
+
 # gradle
 gradle
 
