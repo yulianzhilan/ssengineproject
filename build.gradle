@@ -46,6 +46,9 @@ dependencies{
     compile "org.springframework:spring-test:$springVersion"
     compile "org.springframework:spring-orm:$springVersion"
 
+    //添加httpclient包
+    // 详细学习资料见 http://www.blogjava.net/Alpha/archive/2007/01/22/95216.html
+    compile 'commons-httpclient:commons-httpclient:3.1'
 
 //hibernate
 //    compile "org.hibernate:hibernate-core:$hibernateVersion"
