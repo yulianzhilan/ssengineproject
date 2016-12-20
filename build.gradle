@@ -71,6 +71,8 @@ dependencies{
 // dom4j
     compile "dom4j:dom4j:1.6.1"
 
+//  jsoup 详见http://blog.csdn.net/lmj623565791/article/details/23272657
+    compile 'org.jsoup:jsoup:1.7.3'
 //utils
     compile 'commons-codec:commons-codec:1.10'
     compile 'ognl:ognl:3.1.4'
