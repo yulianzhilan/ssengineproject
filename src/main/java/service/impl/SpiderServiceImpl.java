@@ -105,7 +105,7 @@ public class SpiderServiceImpl implements SpiderService{
         if(StringUtils.isEmpty(url)){
             throw new RuleException("url不能为空!");
         }
-        if(!url.startsWith("'http://www.")){
+        if(!url.startsWith("http://www.")){
             rule.setUrl("http://www.baidu.com/s".concat(url));
         }
         if(rule.getParams()!=null && rule.getValues()!=null){
