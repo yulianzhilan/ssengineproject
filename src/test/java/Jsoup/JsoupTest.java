@@ -39,7 +39,7 @@ public class JsoupTest {
         for(LinkData data : datas){
             System.out.println(data.getLinkText());
             System.out.println(data.getLinkHref());
-            System.out.println("***********************************************");
+            System.out.println("***********************************");
         }
     }
 }
