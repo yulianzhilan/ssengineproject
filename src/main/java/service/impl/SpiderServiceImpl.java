@@ -79,10 +79,12 @@ public class SpiderServiceImpl implements SpiderService{
                     //必要的筛选
                     String linkHref = link.attr("href");
                     String linkText = link.text();
+                    String detail = link.data();
 
                     data = new LinkData();
                     data.setLinkHref(linkHref);
                     data.setLinkText(linkText);
+                    data.setContent(detail);
 
                     datas.add(data);
                 }
@@ -105,8 +107,8 @@ public class SpiderServiceImpl implements SpiderService{
         if(StringUtils.isEmpty(url)){
             throw new RuleException("url不能为空!");
         }
-        if(!url.startsWith("http://www.")){
-            rule.setUrl("http://www.baidu.com/s".concat(url));
+        if(!url.startsWith("http://www") && !url.startsWith("https://www")){
+            rule.setUrl("http://www.baidu.com/s");
         }
         if(rule.getParams()!=null && rule.getValues()!=null){
             if(rule.getParams().length != rule.getValues().length){
