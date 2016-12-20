@@ -45,10 +45,10 @@ public class SpiderServiceImpl implements SpiderService{
             Document doc = null;
             switch (requestType){
                 case Rule.GET :
-                    doc = conn.timeout(10000).get();
+                    doc = conn.timeout(100000).get();
                     break;
                 case Rule.POST:
-                    doc = conn.timeout(10000).post();
+                    doc = conn.timeout(100000).post();
                     break;
             }
 
@@ -105,8 +105,8 @@ public class SpiderServiceImpl implements SpiderService{
         if(StringUtils.isEmpty(url)){
             throw new RuleException("url不能为空!");
         }
-        if(!url.startsWith("'http://www.")){
-            rule.setUrl("http://www.baidu.com/s".concat(url));
+        if(!url.startsWith("http://www") && !url.startsWith("https://www")){
+            rule.setUrl("http://www.baidu.com/s");
         }
         if(rule.getParams()!=null && rule.getValues()!=null){
             if(rule.getParams().length != rule.getValues().length){

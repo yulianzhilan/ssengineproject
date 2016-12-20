@@ -27,12 +27,17 @@ public class JsoupTest {
 
     @Test
     public void getDataBySelection(){
-        Rule rule = new Rule("http://www.sina.com.cn/",new String[]{"address","date"},new String[]{"上海","12月25"},"div",Rule.SELECTTION,Rule.GET);
+        Rule rule = new Rule("http://www.hao123.com/",new String[]{"word"},new String[]{"上海"},"div",Rule.SELECTTION,Rule.POST);
         List<LinkData> results = SpiderServiceImpl.search(rule);
         printf(results);
     }
 
+    @Test
+    public void getLinks(){
+        Rule rule = new Rule("http://news.ycombinator.com/",null,null,null,Rule.GET,Rule.CLASS);
+        SpiderServiceImpl.listLinks(rule);
 
+    }
 
 
     private void printf (List<LinkData> datas){
