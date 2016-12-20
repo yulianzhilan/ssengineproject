@@ -4,6 +4,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.dom4j.io.SAXReader;
 import org.springframework.stereotype.Service;
 import service.SimpleHttpClient;
 
@@ -48,5 +49,9 @@ public class SimpleHttpClientImpl implements SimpleHttpClient{
                 e.printStackTrace();
             }
         }
+    }
+
+    private void parse(String body){
+        SAXReader reader = new SAXReader();
     }
 }
