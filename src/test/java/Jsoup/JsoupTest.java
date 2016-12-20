@@ -45,7 +45,7 @@ public class JsoupTest {
             System.out.println(data.getLinkText());
             System.out.println(data.getContent());
             System.out.println(data.getLinkHref());
-            System.out.println("***********************************");
+            System.out.println("******************");
         }
     }
 }
