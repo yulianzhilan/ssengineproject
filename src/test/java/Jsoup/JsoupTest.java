@@ -34,8 +34,8 @@ public class JsoupTest {
 
     @Test
     public void getLinks(){
-        Rule rule = new Rule("http://news.ycombinator.com/",null,null,null,Rule.GET,Rule.CLASS);
-        SpiderServiceImpl.listLinks(rule);
+//        Rule rule = new Rule("http://news.ycombinator.com/",null,null,null,Rule.GET,Rule.CLASS);
+//        SpiderServiceImpl.listLinks(rule);
 
     }
 

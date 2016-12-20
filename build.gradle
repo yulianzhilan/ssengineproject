@@ -71,8 +71,15 @@ dependencies{
 // dom4j
     compile "dom4j:dom4j:1.6.1"
 
-//  jsoup 详见http://blog.csdn.net/lmj623565791/article/details/23272657
+//  jsoup 详见  http://blog.csdn.net/lmj623565791/article/details/23272657
     compile 'org.jsoup:jsoup:1.7.3'
+
+// Apache HttpComponents 4.3  http://johnhany.net/2013/11/web-crawler-using-java-and-mysql/
+    compile 'org.apache.httpcomponents:httpclient:4.3.4'
+// HTML Parser 2.0
+    compile "org.htmlparser:htmlparser:2.1"
+//MYSQL
+    compile "mysql:mysql-connector-java:5.1.38"
 //utils
     compile 'commons-codec:commons-codec:1.10'
     compile 'ognl:ognl:3.1.4'
