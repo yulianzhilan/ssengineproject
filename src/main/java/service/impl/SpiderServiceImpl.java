@@ -79,10 +79,12 @@ public class SpiderServiceImpl implements SpiderService{
                     //必要的筛选
                     String linkHref = link.attr("href");
                     String linkText = link.text();
+                    String detail = link.data();
 
                     data = new LinkData();
                     data.setLinkHref(linkHref);
                     data.setLinkText(linkText);
+                    data.setContent(detail);
 
                     datas.add(data);
                 }
@@ -96,6 +98,37 @@ public class SpiderServiceImpl implements SpiderService{
         return datas;
     }
 
+    public static void listLinks(Rule rule){
+        rule = validateRule(rule);
+        try {
+            Document doc = Jsoup.connect(rule.getUrl()).get();
+            Elements links = doc.select("a[href]");
+            Elements media = doc.select("[src]");
+            Elements imports = doc.select("link[href]");
+
+            System.out.println("media:" + media.size());
+            for(Element src : media){
+                if("img".equals(src.tagName())){
+                    printf(src.tagName(),src.attr("abs:src"),src.attr("height"),trim(src.attr("alt"),20));
+                }else {
+                    printf(src.tagName(),src.attr("abs:src"));
+                }
+            }
+
+            System.out.println("imports:"+imports.size());
+            for(Element _import : imports){
+                printf(_import.tagName(),_import.attr("abs:href"),_import.attr("rel"));
+            }
+
+            System.out.println("links:"+links.size());
+            for(Element link : links){
+                printf(link.attr("abs:href"),trim(link.text(),35));
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 对传入的参数进行验证
      * @param rule
@@ -105,14 +138,30 @@ public class SpiderServiceImpl implements SpiderService{
         if(StringUtils.isEmpty(url)){
             throw new RuleException("url不能为空!");
         }
-        if(!url.startsWith("http://www") && !url.startsWith("https://www")){
-            rule.setUrl("http://www.baidu.com/s");
-        }
+//        if(!url.startsWith("http://www") && !url.startsWith("https://www")){
+//            rule.setUrl("http://www.baidu.com/s");
+//        }
         if(rule.getParams()!=null && rule.getValues()!=null){
             if(rule.getParams().length != rule.getValues().length){
                 throw new RuleException("参数的键值不匹配!");
             }
         }
         return rule;
+    }
+
+    private static String trim (String str,int width){
+        if(str.length()>width){
+            return str.substring(0,width-1)+".";
+        }else{
+            return str;
+        }
+
+    }
+
+    private static void printf(String... msgs){
+        for(String str: msgs){
+            System.out.println("**************************");
+            System.out.print("#"+str);
+        }
     }
 }

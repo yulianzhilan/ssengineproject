@@ -14,7 +14,7 @@ import java.sql.*;
  * Created by scott on 2016/12/20.
  */
 public class ParsePage {
-    public static void parseFromString(String content, Connection conn) throws Exception{
+    public static void parseFromString(String content, Connection conn,String mainurl) throws Exception{
         Parser parser = new Parser(content);
         HasAttributeFilter filter = new HasAttributeFilter("href");
 
@@ -29,11 +29,20 @@ public class ParsePage {
                 if(node instanceof LinkTag) {
                     LinkTag link = (LinkTag) node;
                     String nextlink = link.extractLink();
-                    String mainurl = "http://johnhany.net/";
-                    String wpurl = mainurl + "wp-content/";
+//                    String mainurl = "http://johnhany.net/";
+//                    String wpurl = mainurl + "wp-content/";
+
+                    // 手动处理相对路径
+                    if(!nextlink.startsWith("http")){
+                        if(!nextlink.startsWith("/")){
+                            continue;
+                        }
+                        nextlink = mainurl.concat(nextlink);
+                    }
 
                     //only save page from "http://johnhany.net"
-                    if(nextlink.startsWith(mainurl)) {
+//                    if(nextlink.startsWith(mainurl)) {
+                    if(true) {
                         String sql = null;
                         ResultSet rs = null;
                         PreparedStatement pstmt = null;
@@ -41,9 +50,9 @@ public class ParsePage {
                         String tag = null;
 
                         //do not save any page from "wp-content"
-                        if(nextlink.startsWith(wpurl)) {
-                            continue;
-                        }
+//                        if(nextlink.startsWith(wpurl)) {
+//                            continue;
+//                        }
 
                         try {
                             //check if the link already exists in the database
@@ -61,19 +70,19 @@ public class ParsePage {
                                 System.out.println(nextlink);
 
                                 //use substring for better comparison performance
-                                nextlink = nextlink.substring(mainurl.length());
+//                                nextlink = nextlink.substring(mainurl.length());
                                 //System.out.println(nextlink);
 
-                                if(nextlink.startsWith("tag/")) {
-                                    tag = nextlink.substring(4, nextlink.length()-1);
-                                    //decode in UTF-8 for Chinese characters
-                                    tag = URLDecoder.decode(tag,"UTF-8");
-                                    sql = "INSERT INTO tags (tagname) VALUES ('" + tag + "')";
-                                    pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                                    //if the links are different from each other, the tags must be different
-                                    //so there is no need to check if the tag already exists
-                                    pstmt.execute();
-                                }
+//                                if(nextlink.startsWith("tag/")) {
+//                                    tag = nextlink.substring(4, nextlink.length()-1);
+//                                    //decode in UTF-8 for Chinese characters
+//                                    tag = URLDecoder.decode(tag,"UTF-8");
+//                                    sql = "INSERT INTO tags (tagname) VALUES ('" + tag + "')";
+//                                    pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+//                                    //if the links are different from each other, the tags must be different
+//                                    //so there is no need to check if the tag already exists
+//                                    pstmt.execute();
+//                                }
                             }
                         } catch (SQLException e) {
                             //handle the exceptions

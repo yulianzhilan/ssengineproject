@@ -1,6 +1,5 @@
 package service.impl;
 
-import com.sun.org.apache.xerces.internal.impl.dv.dtd.ENTITYDatatypeValidator;
 import database.ParsePage;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,16 +18,16 @@ import java.sql.*;
  * Created by scott on 2016/12/20.
  */
 public class CrawlerServiceImpl {
-    public final static void getByString(String url, Connection conn) throws Exception{
+    public final static void getByString(String url, Connection conn,String mainUrl) throws Exception{
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         try {
-            HttpGet httpGet = new HttpGet();
+            HttpGet httpGet = new HttpGet(url);
             ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
                 @Override
                 public String handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
                     int status = response.getStatusLine().getStatusCode();
-                    if(status >=200 && status <= 300){
+                    if(status >=200 && status < 300){
                         HttpEntity entity = response.getEntity();
                         return entity != null ? EntityUtils.toString(entity):null;
                     } else{
@@ -37,13 +36,16 @@ public class CrawlerServiceImpl {
                 }
             };
             String responseBody = httpClient.execute(httpGet,responseHandler);
-            ParsePage.parseFromString(responseBody,conn);
+            if(responseBody.split("<!DOCTYPE").length>1){
+                responseBody = "<!DOCTYPE"+responseBody.split("<!DOCTYPE")[1];
+            }
+            ParsePage.parseFromString(responseBody,conn,mainUrl);
         } finally {
             httpClient.close();
         }
     }
 
-    public static void gate(String url) throws Exception{
+    public static void gate(String url,String mainUrl) throws Exception{
         if(validateURL(url)){
             Connection conn = null;
 
@@ -83,7 +85,10 @@ public class CrawlerServiceImpl {
                 }
 
                 while(true){
-                    getByString(url,conn);
+                    getByString(url,conn,mainUrl);
+                    System.out.println("**************************");
+                    System.out.println(count);
+                    Thread.sleep(10000);
                     count++;
 
                     sql = "UPDATE record SET crawled =1 WHERE URL = '"+url+"'";
@@ -100,10 +105,12 @@ public class CrawlerServiceImpl {
                             break;
                         }
 
-                        if(count > 1000 || url == null){
+                        if(count > 10 || url == null){
                             break;
                         }
                     }
+
+
                 }
                 conn.close();
                 conn = null;
