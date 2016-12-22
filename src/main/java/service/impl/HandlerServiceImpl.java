@@ -1,5 +1,8 @@
 package service.impl;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import service.HandlerService;
@@ -16,7 +19,8 @@ public class HandlerServiceImpl implements HandlerService {
     @Resource(name = "scheduledExecutorService")
     private ScheduledExecutorService service;
 
-
+    @Resource(name = "sessionFactory")
+    private SessionFactory factory;
 
     /**
      * 检查/创建数据库并进行第一次检索
@@ -32,7 +36,7 @@ public class HandlerServiceImpl implements HandlerService {
         service.execute(new Runnable() {
             @Override
             public void run() {
-
+                factory.openSession();
             }
         });
 

@@ -30,5 +30,8 @@
 1. 实时记录   <br/>
     1)Hibernate中使用Threadlocal创建线程安全的Session   <br/>
     **http://blog.sina.com.cn/s/blog_7ffb8dd5010146i3.html   <br/>
+    2)前端的展示技术<br/>
+    **http://blog.csdn.net/anluo_sun/article/details/48652215
+    3)
 
 
