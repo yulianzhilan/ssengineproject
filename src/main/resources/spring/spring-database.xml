@@ -40,6 +40,8 @@
                 <prop key="hibernate.jdbc.batch_size">30</prop>
                 <prop key="hibernate.jdbc.fetch_size">30</prop>
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                <!-- 重要: 使用连接池设置false -->
+                <prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
             </props>
         </property>
     </bean>

@@ -9,6 +9,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.sql.*;
 /**
  * Created by scott on 2016/12/20.
  */
+@Service("crawlerService")
 public class CrawlerServiceImpl {
     public final static void getByString(String url, Connection conn,String mainUrl) throws Exception{
         CloseableHttpClient httpClient = HttpClients.createDefault();

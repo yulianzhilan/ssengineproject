@@ -4,6 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import service.impl.CrawlerServiceImpl;
+
+import javax.annotation.Resource;
 
 /**
  * Created by scott on 2016/12/19.
@@ -11,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/main")
 public class MainController {
+    @Resource(name = "crawlerService")
+    private CrawlerServiceImpl crawlerService;
 
     @RequestMapping("/init")
     public ModelAndView init(){
@@ -22,5 +27,15 @@ public class MainController {
         ModelAndView mav = new ModelAndView("index");
         mav.addObject("website",website);
         return mav;
+    }
+
+    @RequestMapping("/cal")
+    public void calculate(){
+        String url = "http://johnhany.net/";
+        try {
+            crawlerService.gate(url,url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

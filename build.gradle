@@ -71,6 +71,12 @@ dependencies{
 
 // dom4j
     compile "dom4j:dom4j:1.6.1"
+//el
+    compile group: 'javax.el', name: 'javax.el-api', version: '2.2.4'
+
+    //
+    compile group: 'org.glassfish.web', name: 'javax.el', version: '2.2.4'
+
 
 // c3p0
     compile "c3p0:c3p0:0.9.1.2"

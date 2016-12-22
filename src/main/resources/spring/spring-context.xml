@@ -9,7 +9,8 @@
     <!-- 扫面Service组件 -->
     <context:component-scan base-package="service"/>
 
-    <bean id="threadPool"
+    <!-- 线程池 -->
+    <bean id="scheduledExecutorService"
           class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
         <property name="poolSize" value="20"/>
     </bean>
