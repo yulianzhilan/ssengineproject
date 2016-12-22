@@ -50,7 +50,8 @@ dependencies{
     // 详细学习资料见 http://www.blogjava.net/Alpha/archive/2007/01/22/95216.html
     compile 'commons-httpclient:commons-httpclient:3.1'
 //  JTA
-    compile group: 'javax.transaction', name: 'jta', version: '1.0.1B'
+    compile group: 'javax.transaction', name: 'jta', version: '1.1'
+//    compile group: 'javax.transaction', name: 'jta', version: '1.0.1B'
 //hibernate
     compile "org.hibernate:hibernate-core:$hibernateVersion"
     compile "org.hibernate:hibernate-ehcache:$hibernateVersion"
