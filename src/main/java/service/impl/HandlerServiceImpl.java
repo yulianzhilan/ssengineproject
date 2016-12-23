@@ -1,9 +1,13 @@
 package service.impl;
 
 import bean.thread.SearchThread;
+import entity.RecordEntity;
 import handler.UrlSearchHandler;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.jdbc.Work;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import service.HandlerService;
@@ -29,6 +33,9 @@ public class HandlerServiceImpl implements HandlerService {
 
     @Resource(name = "urlSearchHandler")
     private UrlSearchHandler handler;
+
+    @Resource(name = "hibernateTemplate")
+    private HibernateTemplate template;
 
     /**
      * (检查/创建数据库并)
@@ -67,8 +74,8 @@ public class HandlerServiceImpl implements HandlerService {
                     } catch (SQLException e){
                         e.printStackTrace();
                     }
-
                     sql = "UPDATE crawler.record SET crawled =1 WHERE URL = '"+url+"'";
+//                    DetachedCriteria criteria = DetachedCriteria.forClass(RecordEntity.class);
                     state = conn.createStatement();
                     //如果此链接没有被检索过，则将此链接存入数据库并检索
                     if(state.executeUpdate(sql) == 0){

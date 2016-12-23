@@ -10,7 +10,6 @@ import javax.annotation.Resource;
  */
 
 public class HibernateUtil {
-    @Resource(name = "sessionFactory")
     private static SessionFactory factory;
 
     private static ThreadLocal<Session> session = new ThreadLocal();

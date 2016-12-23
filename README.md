@@ -30,8 +30,14 @@
 1. 实时记录   <br/>
     1)Hibernate中使用Threadlocal创建线程安全的Session   <br/>
     **http://blog.sina.com.cn/s/blog_7ffb8dd5010146i3.html   <br/>
-    2)前端的展示技术<br/>
-    **http://blog.csdn.net/anluo_sun/article/details/48652215
-    3)
+    2)前端的展示技术   <br/>
+    **http://blog.csdn.net/anluo_sun/article/details/48652215 <br/>
+    3)Hibernate Criteria  <br/>
+    **http://blog.csdn.net/saindy5828/article/details/16893257 <br/>
+    **http://docs.jboss.org/hibernate/orm/3.5/reference/zh-CN/html/querycriteria.html <br/>
+    4)Hibernate  Template  <br/>
+    **http://www.360doc.com/content/14/0418/23/7669533_370187570.shtml  <br/>
+    5)Spring + Hibernate 多线程 <br/>
+    **http://blog.csdn.net/cgjkjk/article/details/16801347  <br/>
 
 
