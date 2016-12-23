@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Created by scott on 2016/12/22.
  */
-@Entity
+@Entity(name = "record")
 @Table(name="RECORD",schema = "crawler")
 public class RecordEntity implements Serializable{
 

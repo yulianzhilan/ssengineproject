@@ -1,13 +1,18 @@
 package service.impl;
 
+import bean.thread.SearchThread;
+import handler.UrlSearchHandler;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.hibernate.jdbc.Work;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import service.HandlerService;
 
 import javax.annotation.Resource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
@@ -22,24 +27,61 @@ public class HandlerServiceImpl implements HandlerService {
     @Resource(name = "sessionFactory")
     private SessionFactory factory;
 
+    @Resource(name = "urlSearchHandler")
+    private UrlSearchHandler handler;
+
     /**
-     * 检查/创建数据库并进行第一次检索
+     * (检查/创建数据库并)
+     * 进行第一次检索
      *
      * @param url
      * @param mainUrl
      */
     @Override
-    public void databaseAndFirstSearch(String url, String mainUrl) {
+    public void databaseAndFirstSearch(final String url, String mainUrl) throws InterruptedException {
         if(validateURL(url) || validateURL(mainUrl)){
             throw new RuntimeException("路径参数有误！");
         }
-        service.execute(new Runnable() {
+        factory.openSession().doWork(new Work() {
             @Override
-            public void run() {
-                factory.openSession();
+            public void execute(Connection conn) throws SQLException {
+                String sql;
+                Statement state;
+                if(conn != null){
+                    try{
+                        sql = "CREATE DATABASE IF NOT EXISTS crawler";
+                        state = conn.createStatement();
+                        state.executeUpdate(sql);
+
+                        sql = "USE crawler";
+                        state = conn.createStatement();
+                        state.executeUpdate(sql);
+
+                        sql = "CREATE TABLE IF NOT EXISTS record(recordId int (5) not null auto_increment, URL text not null, crawled tinyint(1) not null, primary key (recordID)) engine=InnoDB DEFAULT CHARSET=utf8;";
+                        state = conn.createStatement();
+                        state.executeUpdate(sql);
+
+                        sql = "CREATE TABLE IF NOT EXISTS tags(tagnum int(4) not null auto_increment, tagname text not null, primary key (tagnum)) engine=InnoDB DEFAULT CHARSET=utf8";
+                        state=conn.createStatement();
+                        state.executeUpdate(sql);
+                    } catch (SQLException e){
+                        e.printStackTrace();
+                    }
+
+                    sql = "UPDATE crawler.record SET crawled =1 WHERE URL = '"+url+"'";
+                    state = conn.createStatement();
+                    //如果此链接没有被检索过，则将此链接存入数据库并检索
+                    if(state.executeUpdate(sql) == 0){
+                        handler.getByString(url,conn,mainUrl);
+                    }else {
+                        // TODO 此处编写如果该链接已经被检索过的逻辑
+                    }
+                    conn.close();
+                    System.out.println("FIRST SEARCH DONE!");
+                }
             }
         });
-
+        searchFromDatabase(mainUrl);
     }
 
     /**
@@ -49,6 +91,30 @@ public class HandlerServiceImpl implements HandlerService {
     public void daemonThread() {
 
     }
+
+
+    /**
+     * 从数据库中查询没有被检索过的数据并检索
+     * @param mainUrl
+     */
+    @Override
+    public void searchFromDatabase(String mainUrl){
+        service.execute(new SearchThread(mainUrl));
+        factory.openSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                String sql= "SELECT * FROM crawler.record WHERE crawled = 0";
+                Statement state = connection.createStatement();
+                ResultSet result = state.executeQuery(sql);
+                while(result.next()){
+                    String path = result.getString(2);
+                    handler.getByString(path,connection,mainUrl);
+                }
+                connection.close();
+            }
+        });
+    }
+
 
     /**
      * 实时推送
@@ -66,6 +132,7 @@ public class HandlerServiceImpl implements HandlerService {
     private boolean validateURL(String url){
         //TODO 具体的验证逻辑写在这里
 
-        return !StringUtils.isEmpty(url);
+        return StringUtils.isEmpty(url);
     }
+
 }

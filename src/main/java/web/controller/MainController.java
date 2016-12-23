@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import service.impl.CrawlerServiceImpl;
+import service.HandlerService;
 
 import javax.annotation.Resource;
 
@@ -14,8 +14,10 @@ import javax.annotation.Resource;
 @Controller
 @RequestMapping("/main")
 public class MainController {
-    @Resource(name = "crawlerService")
-    private CrawlerServiceImpl crawlerService;
+//    @Resource(name = "crawlerService")
+//    private CrawlerServiceImpl crawlerService;
+    @Resource(name = "handlerService")
+    private HandlerService handlerService;
 
     @RequestMapping("/init")
     public ModelAndView init(){
@@ -33,7 +35,8 @@ public class MainController {
     public void calculate(){
         String url = "http://johnhany.net/";
         try {
-            crawlerService.gate(url,url);
+//            crawlerService.gate(url,url);
+            handlerService.databaseAndFirstSearch(url,url);
         } catch (Exception e) {
             e.printStackTrace();
         }

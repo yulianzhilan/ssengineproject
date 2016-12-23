@@ -7,20 +7,28 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
     <context:property-placeholder location="classpath:env/jdbc.properties"/>
-    <!-- c3p0数据源 -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="${c3p0.driverClass}"/>
-        <property name="jdbcUrl" value="${c3p0.jdbcUrl}"/>
-        <property name="user" value="${c3p0.user}"/>
+    <!--&lt;!&ndash; c3p0数据源 &ndash;&gt;-->
+    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">-->
+        <!--<property name="driverClass" value="${c3p0.driverClass}"/>-->
+        <!--<property name="jdbcUrl" value="${c3p0.jdbcUrl}"/>-->
+        <!--<property name="user" value="${c3p0.user}"/>-->
+        <!--<property name="password" value="${c3p0.password}"/>-->
+        <!--<property name="minPoolSize" value="${c3p0.minPoolSize}"/>-->
+        <!--<property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>-->
+        <!--<property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>-->
+        <!--<property name="maxIdleTime" value="${c3p0.maxIdleTime}"/>-->
+        <!--<property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>-->
+        <!--<property name="maxStatements" value="${c3p0.maxStatements}"/>-->
+        <!--<property name="maxStatementsPerConnection" value="${c3p0.maxStatementsPerConnection}"/>-->
+     <!--</bean>-->
+
+    <!-- jdbc数据源 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${c3p0.driverClass}"/>
+        <property name="url" value="${c3p0.jdbcUrl}"/>
+        <property name="username" value="${c3p0.user}"/>
         <property name="password" value="${c3p0.password}"/>
-        <property name="minPoolSize" value="${c3p0.minPoolSize}"/>
-        <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>
-        <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>
-        <property name="maxIdleTime" value="${c3p0.maxIdleTime}"/>
-        <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>
-        <property name="maxStatements" value="${c3p0.maxStatements}"/>
-        <property name="maxStatementsPerConnection" value="${c3p0.maxStatementsPerConnection}"/>
-     </bean>
+    </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -39,9 +47,9 @@
                 <prop key="hibernate.max_fetch_depth">3</prop>
                 <prop key="hibernate.jdbc.batch_size">30</prop>
                 <prop key="hibernate.jdbc.fetch_size">30</prop>
-                <prop key="hibernate.cache.use_second_level_cache">false</prop>
-                <!-- 重要: 使用连接池设置false -->
-                <prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+                <!--<prop key="hibernate.cache.use_second_level_cache">false</prop>-->
+                <!--&lt;!&ndash; 重要: 使用连接池设置false &ndash;&gt;-->
+                <!--<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>-->
             </props>
         </property>
     </bean>

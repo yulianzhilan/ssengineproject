@@ -14,4 +14,6 @@
           class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
         <property name="poolSize" value="20"/>
     </bean>
+
+    <bean id="urlSearchHandler" class="handler.UrlSearchHandler"/>
 </beans>
