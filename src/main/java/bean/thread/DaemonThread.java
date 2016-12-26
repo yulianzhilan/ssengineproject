@@ -39,25 +39,18 @@ public class DaemonThread implements Runnable{
 
     @Override
     public void run() {
-        System.out.println("1");
         factory.openSession().doWork(new Work() {
             @Override
             public void execute(Connection connection) throws SQLException {
-                System.out.println("2");
                 String sql = "SELECT COUNT(1) FROM crawler.record WHERE crawled = 0";
                 Statement state = connection.createStatement();
                 while(true) {
-                    System.out.println("3");
                     ResultSet result = state.executeQuery(sql);
-                    System.out.println("3-1");
                     if(!result.next()){
                         System.out.println(result.getString(1));
                         System.out.println("break");
                         break;
                     }else {
-//                        result.next();
-//                    if(result.next()){
-                        System.out.println("4");
                         int count = result.getInt(1);
                         if (count > 100) {
                             System.out.println("4-1");

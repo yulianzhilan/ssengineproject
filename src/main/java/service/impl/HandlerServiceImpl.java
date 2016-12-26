@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -40,8 +41,8 @@ public class HandlerServiceImpl implements HandlerService {
     @Resource(name = "searchThread")
     private Runnable search;
 
-    private Executor executor = new ScheduledThreadPoolExecutor(10);
-
+//    private Executor executor = new ScheduledThreadPoolExecutor(10);
+    private Executor executor = Executors.newFixedThreadPool(10);
     /**
      * (检查/创建数据库并)
      * 进行第一次检索

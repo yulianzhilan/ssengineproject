@@ -45,6 +45,7 @@ public class SearchThread implements Runnable{
                     System.out.println("getByString");
                 }
                 System.out.println(Thread.currentThread().getName()+"search finished");
+                System.out.println(Thread.activeCount());
                 connection.close();
             }
         });

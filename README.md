@@ -39,5 +39,7 @@
     **http://www.360doc.com/content/14/0418/23/7669533_370187570.shtml  <br/>
     5)Spring + Hibernate 多线程 <br/>
     **http://blog.csdn.net/cgjkjk/article/details/16801347  <br/>
+    6)Executor<br/>
+    **http://blog.csdn.net/fngy123/article/details/48738409<br/>
 
 
