@@ -90,6 +90,11 @@ public class UrlSearchHandler {
                         nextlink = mainurl.concat(nextlink);
                     }
 
+                    //此处增加过滤掉非mainUrl下的其他链接
+                    if(!nextlink.startsWith(mainurl)){
+                        continue;
+                    }
+
                     if(true) {
                         final String nextLink = nextlink;
                         String sql = null;

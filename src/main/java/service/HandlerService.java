@@ -12,7 +12,7 @@ public interface HandlerService {
     /**
      * 守护线程，负责查询定时查询数据库中未被检索的链接数，并根据该结果动态创建子线程检索未被检索的链接
      */
-    void daemonThread();
+    void daemonThread(String mainUrl);
 
     /**
      * 实时推送

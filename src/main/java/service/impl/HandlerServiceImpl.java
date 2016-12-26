@@ -1,11 +1,7 @@
 package service.impl;
 
-import bean.thread.SearchThread;
-import entity.RecordEntity;
 import handler.UrlSearchHandler;
-import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.jdbc.Work;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -14,10 +10,11 @@ import service.HandlerService;
 
 import javax.annotation.Resource;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * Created by scott on 2016/12/22.
@@ -36,6 +33,14 @@ public class HandlerServiceImpl implements HandlerService {
 
     @Resource(name = "hibernateTemplate")
     private HibernateTemplate template;
+
+    @Resource(name = "daemThread")
+    private Runnable task;
+
+    @Resource(name = "searchThread")
+    private Runnable search;
+
+    private Executor executor = new ScheduledThreadPoolExecutor(10);
 
     /**
      * (检查/创建数据库并)
@@ -88,15 +93,17 @@ public class HandlerServiceImpl implements HandlerService {
                 }
             }
         });
-        searchFromDatabase(mainUrl);
+        daemonThread(mainUrl);
+//        searchFromDatabase(mainUrl);
+        Thread.sleep(5000);
     }
 
     /**
      * 守护线程，负责查询定时查询数据库中未被检索的链接数，并根据该结果动态创建子线程检索未被检索的链接
      */
     @Override
-    public void daemonThread() {
-
+    public void daemonThread(String mainUrl) {
+        service.execute(task);
     }
 
 
@@ -106,20 +113,7 @@ public class HandlerServiceImpl implements HandlerService {
      */
     @Override
     public void searchFromDatabase(String mainUrl){
-        service.execute(new SearchThread(mainUrl));
-        factory.openSession().doWork(new Work() {
-            @Override
-            public void execute(Connection connection) throws SQLException {
-                String sql= "SELECT * FROM crawler.record WHERE crawled = 0";
-                Statement state = connection.createStatement();
-                ResultSet result = state.executeQuery(sql);
-                while(result.next()){
-                    String path = result.getString(2);
-                    handler.getByString(path,connection,mainUrl);
-                }
-                connection.close();
-            }
-        });
+        executor.execute(search);
     }
 
 

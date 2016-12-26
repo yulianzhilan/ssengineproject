@@ -16,4 +16,12 @@
     </bean>
 
     <bean id="urlSearchHandler" class="handler.UrlSearchHandler"/>
+
+    <bean id="daemThread" class="bean.thread.DaemonThread">
+        <constructor-arg name="mainUrl" value="http://johnhany.net/"/>
+    </bean>
+
+    <bean id="searchThread" class="bean.thread.SearchThread" scope="prototype">
+        <constructor-arg name="mainUrl" value="http://johnhany.net/"/>
+    </bean>
 </beans>
